@@ -1,44 +1,30 @@
-// var http = require('http'); 
 
-// var fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser'); //parsing the body of a form
+const app = express();
 
-// var jsonData = {
-//     'name': 'NodeJS',
-//     'lang': 'Javascript',
-//     'use': 'Write once, run everywhere'
-// };
-
-
-// http.createServer(function (req, res) {
-//     fs.readFile('./index.html', function(err, data) {
-//     res.writeHead(200, {'Content-Type': 'text/html'});
-//     res.write(data);
-//     res.end();
-// });
-
-       
-//     }).listen(3000);
-//     console.log("We are no listening on port 3000");
-
-
-
-//now using express
-
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-
-var urlencodedParser = bodyParser.urlencoded({extended : false});
+const urlencodedParser = bodyParser.urlencoded({extended : true}); 
+//The urlencoded method within body-parser tells body-parser to extract data from the <form> element and add them to the body property in the request object.
 app.use(urlencodedParser);
 app.set('view engine', 'ejs');
 
 
 //root route
-app.get("/", function(req,res){
+app.get("/", (req,res)=>{
                 res.render("index");
         });
+
+
+app.post('/quotes', (req,res)=>{
+        console.log(req.body);
+})
+
+
+
+
+
 //contact us route
-app.get("/contact-us", function(req,res){
+app.get("/contact-us", (req,res) =>{
     res.write("You have contacted us. Details are below");
     res.write("\nHi "+ req.body.firstname + ", you said:");
     res.write("\nMessage: "+ req.body.message)
