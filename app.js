@@ -30,12 +30,19 @@ var app = express();
 var urlencodedParser = bodyParser.urlencoded({extended : false});
 app.use(urlencodedParser);
 app.set('view engine', 'ejs');
+
 app.get("/", function(req,res){
                 res.render("index");
         });
+
 app.get("/contact-us", function(req,res){
-                res.render("contact");
+    res.write("You have contacted us. Details are below");
+    res.write("\nHi "+ req.body.firstname + ", you said:");
+    res.write("\nMessage: "+ req.body.message)
+    res.write("\nWe would use your provided email "+ req.body.email+ " to get back to you");
+    res.end();
         });
+
 app.post("/contact-us", function(req,res){
                 res.write("You have contacted us. Details are below");
                 res.write("\nHi "+ req.body.firstname + ", you said:");
