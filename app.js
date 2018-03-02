@@ -6,13 +6,15 @@ const MongoClient = require('mongodb').MongoClient
 var db
 
 
-app.use(bodyParser.urlencoded({extended: true}))
+
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({extended: true}));
 
 MongoClient.connect('mongodb://test:test@ds155288.mlab.com:55288/allyourbase', (err, client) => {
   if (err) return console.log(err)
   db = client.db('allyourbase') // whatever your database name is
   app.listen(3000, () => {
-    console.log('listening on 3000')
+    console.log('listening on 3000');
   })
 })
 
@@ -21,11 +23,24 @@ app.post('/quotes', (req, res) => {
         db.collection('quotes').save(req.body, (err, result) => {
           if (err) return console.log(err)
       
-          console.log('saved to database')
+          console.log('saved to database');
           res.redirect('/')
         })
       })
 
+
+
+      app.get('/', (req, res) => {
+        app.get('/', (req, res) => {
+                db.collection('quotes').find().toArray((err, result) => {
+                  if (err) return console.log(err)
+                  // renders index.ejs
+                  res.render('index.ejs', {quotes: result})
+                })
+              })
+
+
+      });
 
 //middleware
 app.use(bodyParser.json());
