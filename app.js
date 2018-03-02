@@ -2,7 +2,23 @@
 const express = require('express');
 const bodyParser = require('body-parser'); //parsing the body of a form
 const app = express();
+const MongoClient = require('mongodb').MongoClient;
 
+
+//mongo db server setup
+MongoClient.connect('your-mongo-url', (err, client)=>{
+      //need to add th server link here
+      if (err) return console.log(err)
+      db = client.db('star-wars-quotes') // whatever your database name is
+      app.listen(3000, () => {
+        console.log('listening on 3000')
+      })
+    });
+
+
+
+
+//middleware
 const urlencodedParser = bodyParser.urlencoded({extended : true}); 
 //The urlencoded method within body-parser tells body-parser to extract data from the <form> element and add them to the body property in the request object.
 app.use(urlencodedParser);
