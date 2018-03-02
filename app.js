@@ -1,22 +1,23 @@
 
-const express = require('express');
-const bodyParser = require('body-parser'); //parsing the body of a form
-const app = express();
-const MongoClient = require('mongodb').MongoClient;
+const express = require('express')
+const bodyParser= require('body-parser')
+const app = express()
+const MongoClient = require('mongodb').MongoClient
+var db
 
 
-//mongo db server setup
-MongoClient.connect('mongodb://iosovets:summer09@ds155288.mlab.com:55288/allyourbase', (err, client)=>{
-      //need to add th server link here
-      if (err) return console.log(err)
-      db = client.db('allyourbase') // whatever your database name is
-      app.listen(3000, () => {
-        console.log('listening on 3000')
-      })
-    });
+app.use(bodyParser.urlencoded({extended: true}))
+
+MongoClient.connect('mongodb://test:test@ds155288.mlab.com:55288/allyourbase', (err, client) => {
+  if (err) return console.log(err)
+  db = client.db('allyourbase') // whatever your database name is
+  app.listen(3000, () => {
+    console.log('listening on 3000')
+  })
+})
 
 
-    app.post('/quotes', (req, res) => {
+app.post('/quotes', (req, res) => {
         db.collection('quotes').save(req.body, (err, result) => {
           if (err) return console.log(err)
       
